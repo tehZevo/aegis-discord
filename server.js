@@ -20,7 +20,18 @@ function startsWithMention(text)
 
 function trimMention(text)
 {
+  var m1 = `<@${client.user.id}>`;
+  var m2 = `<@!${client.user.id}>`;
+  if(text.startsWith(m1))
+  {
+    return text.slice(m1.length).trim();
+  }
+  if(text.startsWith(m2))
+  {
+    return text.slice(m2.length).trim();
+  }
 
+  return text;
 }
 
 // Register an event to handle incoming messages
@@ -41,8 +52,9 @@ client.on('messageCreate', async (msg) => {
       return;
     }
   }
+  console.log(content)
   //send message to receiver
-  var response = await protopost(RECEIVER, msg.content);
+  var response = await protopost(RECEIVER, content);
   //if response is non-null, and non-empty, send it as a response
   if(response != null)
   {
