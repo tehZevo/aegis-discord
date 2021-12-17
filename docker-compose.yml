@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  aegis-discord:
+    build: .
+    environment:
+      TOKEN: $TOKEN
+      RECEIVER: "http://host.docker.internal:8081"
