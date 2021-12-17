@@ -14,9 +14,9 @@ client.on('ready', () => {
 // Register an event to handle incoming messages
 client.on('messageCreate', async (msg) => {
   console.log(msg)
-  //TODO: send message to receiver
+  //send message to receiver
   var response = await protopost(RECEIVER, msg.content);
-  //TODO: if response is non-null, and non-empty, send it as a response
+  //if response is non-null, and non-empty, send it as a response
   if(response != null)
   {
     msg.reply(response);
