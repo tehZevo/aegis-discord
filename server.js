@@ -6,6 +6,7 @@ var TOKEN = process.env["TOKEN"]
 var RECEIVER = process.env["RECEIVER"];
 var IGNORE_SELF = process.env["IGNORE_SELF"] || true;
 var REQUIRE_MENTION = process.env["REQUIRE_MENTION"] || true;
+var ONLY_CONTENT = process.env["ONLY_CONTENT"] || false;
 
 var client = new Client({intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 
@@ -55,15 +56,23 @@ client.on('messageCreate', async (msg) => {
         return;
       }
     }
-    var data = {
-      originalContent: oc,
-      content,
-      id: msg.id,
-      author: msg.authorId,
-      channel: msg.channel.id,
-      guild: msg.guild.id,
-      attachments: msg.attachments.map((e) => e.url)
-    };
+    var data;
+    if(ONLY_CONTENT)
+    {
+      data = content;
+    }
+    else
+    {
+      data = {
+        originalContent: oc,
+        content,
+        id: msg.id,
+        author: msg.authorId,
+        channel: msg.channel.id,
+        guild: msg.guild.id,
+        attachments: msg.attachments.map((e) => e.url)
+      };
+    }
     //send message to receiver
     var response = await protopost(RECEIVER, data);
     //if response is non-null, and non-empty, send it as a response
