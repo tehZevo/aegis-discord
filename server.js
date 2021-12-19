@@ -37,6 +37,7 @@ function trimMention(text)
 // Register an event to handle incoming messages
 client.on('messageCreate', async (msg) => {
   var content = msg.content;
+  var oc = content;
   if(msg.author == client.user && IGNORE_SELF)
   {
     return;
@@ -52,15 +53,23 @@ client.on('messageCreate', async (msg) => {
       return;
     }
   }
-  console.log(content)
+  var data = {
+    originalContent: oc,
+    content,
+    id: msg.id,
+    author: msg.authorId,
+    channel: msg.channel.id,
+    guild: msg.guild.id,
+    attachments: msg.attachments.map((e) => e.url))
+  };
   //send message to receiver
-  var response = await protopost(RECEIVER, content);
+  var response = await protopost(RECEIVER, data);
   //if response is non-null, and non-empty, send it as a response
   if(response != null)
   {
+    //TODO: support attachments
     msg.reply(response);
   }
-  //TODO: support more complex response messages (files list w/ b64 encoded files, embeds, etc)
 });
 
 client.login(TOKEN);
