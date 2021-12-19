@@ -26,3 +26,6 @@ Responses should be of the form:
   ]
 }
 ```
+
+## TODO:
+* parse mime types from attachments if present and give the file a default name

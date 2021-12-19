@@ -37,51 +37,57 @@ function trimMention(text)
 
 // Register an event to handle incoming messages
 client.on('messageCreate', async (msg) => {
-  var content = msg.content;
-  var oc = content;
-  if(msg.author == client.user && IGNORE_SELF)
-  {
-    return;
-  }
-  if(REQUIRE_MENTION)
-  {
-    if(startsWithMention(content))
-    {
-      content = trimMention(content)
-    }
-    else
+  try {
+    var content = msg.content;
+    var oc = content;
+    if(msg.author == client.user && IGNORE_SELF)
     {
       return;
     }
-  }
-  var data = {
-    originalContent: oc,
-    content,
-    id: msg.id,
-    author: msg.authorId,
-    channel: msg.channel.id,
-    guild: msg.guild.id,
-    attachments: msg.attachments.map((e) => e.url)
-  };
-  //send message to receiver
-  var response = await protopost(RECEIVER, data);
-  //if response is non-null, and non-empty, send it as a response
-  if(response != null)
-  {
-    if(typeof response == "string")
+    if(REQUIRE_MENTION)
     {
-      msg.reply(response);
+      if(startsWithMention(content))
+      {
+        content = trimMention(content)
+      }
+      else
+      {
+        return;
+      }
     }
-    else
+    var data = {
+      originalContent: oc,
+      content,
+      id: msg.id,
+      author: msg.authorId,
+      channel: msg.channel.id,
+      guild: msg.guild.id,
+      attachments: msg.attachments.map((e) => e.url)
+    };
+    //send message to receiver
+    var response = await protopost(RECEIVER, data);
+    //if response is non-null, and non-empty, send it as a response
+    if(response != null)
     {
-      //parse attachments
-      var atts = response.attachments != null ? response.attachments.map(({data, name}) => new Discord.MessageAttachment(Buffer.from(data, "base64"), name)) : null;
+      if(typeof response == "string")
+      {
+        msg.reply(response);
+      }
+      else
+      {
+        //parse attachments
+        var atts = response.attachments != null ? response.attachments.map(({data, name}) => new Discord.MessageAttachment(Buffer.from(data, "base64"), name)) : null;
 
-      msg.reply({
-        content: response.content,
-        files: atts
-      })
+        msg.reply({
+          content: response.content,
+          files: atts
+        })
+      }
     }
+  }
+  catch(e)
+  {
+    console.error(e)
   }
 });
 
