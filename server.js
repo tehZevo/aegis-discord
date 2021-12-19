@@ -60,7 +60,7 @@ client.on('messageCreate', async (msg) => {
     author: msg.authorId,
     channel: msg.channel.id,
     guild: msg.guild.id,
-    attachments: msg.attachments.map((e) => e.url))
+    attachments: msg.attachments.map((e) => e.url)
   };
   //send message to receiver
   var response = await protopost(RECEIVER, data);
