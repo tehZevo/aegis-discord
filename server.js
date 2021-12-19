@@ -1,12 +1,13 @@
 var protopost = require("protopost").client;
-const {Client, Intents} = require("discord.js");
+var Discord = require("discord.js");
+var {Client, Intents, MessageAttachment} = Discord;
 
 var TOKEN = process.env["TOKEN"]
 var RECEIVER = process.env["RECEIVER"];
 var IGNORE_SELF = process.env["IGNORE_SELF"] || true;
 var REQUIRE_MENTION = process.env["REQUIRE_MENTION"] || true;
 
-const client = new Client({intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+var client = new Client({intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -67,8 +68,20 @@ client.on('messageCreate', async (msg) => {
   //if response is non-null, and non-empty, send it as a response
   if(response != null)
   {
-    //TODO: support attachments
-    msg.reply(response);
+    if(typeof response == "string")
+    {
+      msg.reply(response);
+    }
+    else
+    {
+      //parse attachments
+      var atts = response.attachments != null ? response.attachments.map(({data, name}) => new Discord.MessageAttachment(Buffer.from(data, "base64"), name)) : null;
+
+      msg.reply({
+        content: response.content,
+        files: atts
+      })
+    }
   }
 });
 

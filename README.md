@@ -14,3 +14,15 @@ var data = {
   attachments: msg.attachments.map((e) => e.url))
 }
 ```
+
+## Sending data back
+Responses should be of the form:
+```js
+{
+  content: "text content",
+  attachments: [
+    {name: "file.jpg", data: "<base64 encoded file>"},
+    ...
+  ]
+}
+```
