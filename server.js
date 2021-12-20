@@ -7,6 +7,7 @@ var RECEIVER = process.env["RECEIVER"];
 var IGNORE_SELF = process.env["IGNORE_SELF"] || true;
 var REQUIRE_MENTION = process.env["REQUIRE_MENTION"] || true;
 var ONLY_CONTENT = process.env["ONLY_CONTENT"] || false;
+var ERROR_MESSAGE = process.env["ERROR_MESSAGE"] || "`Sorry, an error occurred`"
 
 var client = new Client({intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 
@@ -96,7 +97,7 @@ client.on('messageCreate', async (msg) => {
   }
   catch(e)
   {
-    msg.reply("Sorry, an error occurred");
+    msg.reply(ERROR_MESSAGE);
     console.error(e);
   }
 });

@@ -5,3 +5,4 @@ services:
     environment:
       TOKEN: $TOKEN
       RECEIVER: "http://host.docker.internal:8081"
+      ERROR_MESSAGE: "`Sorry, an error occurred`"
