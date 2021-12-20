@@ -37,3 +37,4 @@ Responses should be of the form:
 
 ## TODO:
 * parse mime types from attachments if present and give the file a default name
+* add routes for sending messages to channels and updating existing messages
