@@ -1,6 +1,14 @@
 # Discord Aegis node
 Listen for/respond to Discord messages using an Aegis node
 
+## Environment
+- `TOKEN` - the Discord bot token to sign in with
+- `RECEIVER` - the ProtoPost node to send messages to
+- `IGNORE_SELF` - if true, ignore messages from the bot itself (defaults to true)
+- `REQUIRE_MENTION` - if true, all messages must begin with a mention to the bot (also trims the mention off; defaults to true)
+- `ONLY_CONTENT` - send only the message content (text) to `RECEIVER` (defaults to false)
+- `ERROR_MESSAGE` - string to reply with if any error occurs
+
 ## Data
 Data is sent in the following format (where `msg` is the data from a `messageCreate` discord.js event):
 ```js
