@@ -80,14 +80,14 @@ client.on('messageCreate', async (msg) => {
     {
       if(typeof response == "string")
       {
-        msg.reply(response);
+        await msg.reply(response);
       }
       else
       {
         //parse attachments
         var atts = response.attachments != null ? response.attachments.map(({data, name}) => new Discord.MessageAttachment(Buffer.from(data, "base64"), name)) : null;
 
-        msg.reply({
+        await msg.reply({
           content: response.content,
           files: atts
         })
@@ -96,7 +96,8 @@ client.on('messageCreate', async (msg) => {
   }
   catch(e)
   {
-    console.error(e)
+    msg.reply("Sorry, an error occurred");
+    console.error(e);
   }
 });
 
